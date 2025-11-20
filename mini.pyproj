@@ -23,6 +23,7 @@
   <ItemGroup>
     <Compile Include="streamlit\mini-app.py" />
     <Compile Include="processing.py" />
+    <Compile Include="tools.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="streamlit\" />
