@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>eea17ed6-c4b4-46e2-87ff-4501ec260f27</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>mini-app.py</StartupFile>
+    <StartupFile>streamlit\mini-app.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,8 +21,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="mini-app.py" />
+    <Compile Include="streamlit\mini-app.py" />
     <Compile Include="processing.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="streamlit\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
