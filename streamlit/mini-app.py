@@ -1,7 +1,7 @@
 ﻿# === ENVIRONMENTS ===
-from pickle import NONE
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from pathlib import Path
 
 # === LIBS GENERAL ===
 import io
@@ -31,6 +31,26 @@ if "mode" not in st.session_state:
     init_session_state()
     
 st.set_page_config(layout="wide")
+
+temp = st.file_uploader(
+    "Загрузите изображение",
+    type=["png", "jpg", "jpeg", "tiff", "bmp"]
+)
+
+if temp is not None:    
+    temp_image = Image.open(temp)
+    temp_image = temp_image.resize((1280, 960))
+
+    buffer = io.BytesIO()
+    temp_image.save(buffer, format = "PNG")
+
+    st.download_button(
+            label = "Скачать уменьшенную картинку",
+            data = buffer.getvalue(),
+            file_name = f"{Path(temp.name).stem}-mini.png",
+            mime = "image/png"
+        )
+        
 left, right = st.columns([1, 2])
 
 # === LEFT PANEL ===
@@ -76,18 +96,19 @@ with right:
     if processingClicked:
         if st.session_state.mode == "DLgram":
             json_data = json.load(st.session_state.uploaded_file)
-            st.session_state.processed_file = process_dlgram(json_data)
+            st.session_state.processed_file = process_dlgram(json_data) #.resize((1280, 960), Image.NEAREST)
 
         else:
             image = Image.open(st.session_state.uploaded_file)
 
             if st.session_state.mode == "TWS":
-                st.session_state.processed_file = process_tws(image)
+                st.session_state.processed_file = process_tws(image) #.resize((1280, 960) , Image.NEAREST)
 
             elif st.session_state.mode == "Cellpose":
-                st.session_state.processed_file = process_cellpose(image)
+                st.session_state.processed_file = process_cellpose(image) #.resize((1280, 960), Image.NEAREST)
                 
         if (st.session_state.gt_file is not None and st.session_state.processed_file is not None):
+
             temp_blobs = makeBlobs(st.session_state.processed_file)
             gt_blobs, _, _ = tools.ImportTaskFromCVAT(st.session_state.gt_file)
             gt_blobs[:, 2] = gt_blobs[:, 2] / 2 # диаметры в радиусы
